@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+
+    		<meta charset="utf-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    		<meta name="description" content="Free Porn video search engine and downloader">
+		<meta name="keywords" content="porn search, porn search engine, porn downloader, free porn download, xsitor, free video downloader, download xvideos, download pornhub">
+    		<meta name="author" content="">
+
+		<!-- Stylesheets -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" 
+			integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+		<link rel="stylesheet" href="static/css/style.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<!-- Font -->
+                <link href='https://fonts.googleapis.com/css?family=Exo' rel='stylesheet'>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+		<title>xsitor - The video search engine we deserve</title>
+
+	</head>
+
+	<body>
+		<script>
+
+
+			$(document).ready(function(){
+				if (location.protocol !== 'https:') {
+                                	location.replace('https://xsitor.com');
+                        	}
+				
+				$("#download_progress").hide();
+
+			});
+
+			function downloadVid(event) {
+                        	$("#download_progress").show();
+
+                                if(event.data.source=='xvideos') {
+                                	var xhttp = new XMLHttpRequest();
+                                        xhttp.onreadystatechange = function() {
+                                        	if (this.readyState == 4 && this.status == 200) {
+							$("#download_progress").hide();
+                                                        location.assign(this.responseText);
+                                                }
+                                      	};
+                                        xhttp.open("POST", "xvdown", true);
+                                        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                        xhttp.send("vidurl=" + event.data.link + "&quality=high");
+                       		}
+				else if(event.data.source=='pornhub') {
+					var xhttp = new XMLHttpRequest();
+                                        xhttp.onreadystatechange = function() {
+                                                if (this.readyState == 4 && this.status == 200) {
+                                                        $("#download_progress").hide();
+                                                        location.assign(this.responseText);
+                                                }
+                                        };
+                                        xhttp.open("POST", "phdown", true);
+                                        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                        xhttp.send("vidurl=" + event.data.link);
+				}
+			}
+
+		</script>
+		
+
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      			<div class="container">
+        			<a class="navbar-brand" href="#">
+          				<img src="static/img/xsitor_logo.png" width="150" height="45" alt="">
+        			</a>
+      			</div>
+    		</nav>
+
+		<div id="search">
+    			<form>
+        			<input type="search" value="" id="q" name="q" placeholder="type keyword(s) here" />
+        			<button type="submit" class="btn btn-primary">Search</button>
+    			</form>
+
+		</div>
+
+		<br/>
+		<p class="text-center" style="color:#fff">xsitor is a <b>free</b> porn video search engine with <b>instant download</b>.<br/> <b>No Ads, No popups, No Login</b>... Straight to the matter!</p>
+		<br/>
+
+		<div class="container" style="padding-bottom:20px">
+			<div class="progress" id="download_progress">
+				<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div> <br/>
+			</div>
+		</div>
+
+		{% for res in results %}
+		<div class="container d-flex justify-content-center">
+			
+			<div class="card flex-row flex-wrap search-res">
+        			<div class="card-header border-0">
+					<img src="{{res['thumb']}}" width="208" height="117" alt="">
+        			</div>
+        			<div class="card-block px-2">
+					<h4 class="card-title">{{res['title']}}</h4>
+					<p class="card-text">{{res['source']}} <b>{{res['duration']}}</b></p>
+					<a href="{{res['link']}}">
+						<button type="button" class="btn btn-info">
+      							<i class="fa fa-play-circle-o"></i> Play
+    						</button>
+					</a>
+					<a href="#">
+						<button id="btndown_{{loop.index-1}}" type="button" class="btn btn-success">
+							<i class="fa fa-download"></i>Download
+						</button>
+						<script>
+							$("#btndown_{{loop.index-1}}").click({source:'{{res['source']}}', link:'{{res['link']}}'}, downloadVid);
+						</script>
+					</a>
+
+        			</div>
+        			<div class="w-100"></div>
+			</div>
+		</div><br/>
+		{% endfor %}
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" 
+			integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" 
+			integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+
+
+	</body>
+</html>
